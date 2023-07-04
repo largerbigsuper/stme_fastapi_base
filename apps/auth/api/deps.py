@@ -9,10 +9,17 @@ from core.db.session import get_db
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from pydantic import ValidationError
 from sqlalchemy.orm import Session
 from core.config import settings
 from apps.auth import curd
+
+
+def valid_role_id(role_id: int, db: Session = Depends(get_db)) -> Mapping:
+    role =  services.role.get_role_by_id(db, role_id)
+    if not role:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
+    return role
+
 
 def valid_user_id(user_id: int, db: Session = Depends(get_db)) -> Mapping:
     user =  services.user.get_user_by_id(db, user_id)

@@ -62,4 +62,4 @@ class CRUDBase(Generic[ModelType]):
         obj = db.query(self.model).get(id)
         db.delete(obj)
         db.commit()
-        return obj
+
