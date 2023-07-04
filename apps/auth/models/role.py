@@ -2,6 +2,8 @@ import datetime
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from core.db.session import Base
 
+from sqlalchemy.orm import relationship
+from . import m2m
 
 class Role(Base):
     __tablename__ = "roles"
@@ -16,3 +18,4 @@ class Role(Base):
     updated_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, comment="更新时间")
     is_active = Column(Boolean, default=True)
 
+    users = relationship("User", back_populates='roles', secondary=m2m.relationship_user_role)

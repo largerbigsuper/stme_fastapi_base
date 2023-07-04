@@ -2,7 +2,8 @@
 import datetime
 from sqlalchemy import Boolean, Column, Integer, String, DateTime
 from core.db.session import Base
-
+from sqlalchemy.orm import relationship
+from . import m2m
 
 class User(Base):
     __tablename__ = "users"
@@ -22,3 +23,4 @@ class User(Base):
     updated_time = Column(DateTime(timezone=True), default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow, comment="更新时间")
     last_login = Column(DateTime, comment="最后登录时间")
     
+    roles = relationship("Role", back_populates='users', secondary=m2m.relationship_user_role)
