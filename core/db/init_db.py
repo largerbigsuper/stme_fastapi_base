@@ -7,12 +7,16 @@ from core.config import settings
 # otherwise, SQL Alchemy might fail to initialize relationships properly
 # for more details: https://github.com/tiangolo/full-stack-fastapi-postgresql/issues/28
 
+from core.db.session import Base
+from core.db.session import engine
+
 
 def init_db(db: Session) -> None:
     # Tables should be created with Alembic migrations
     # But if you don't want to use migrations, create
     # the tables un-commenting the next line
     # Base.metadata.create_all(bind=engine)
+    Base.metadata.create_all(bind=engine)
 
     user = curd.user.get_by_username(db, username=settings.FIRST_SUPERUSER)
     if not user:

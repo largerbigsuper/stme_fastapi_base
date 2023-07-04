@@ -20,9 +20,6 @@ app.add_middleware(
 app.include_router(router, prefix="/" + settings.API_V1_STR)
 
 
-from core.db.session import Base
-from core.db.session import engine
-Base.metadata.create_all(bind=engine)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
