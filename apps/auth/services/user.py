@@ -12,6 +12,9 @@ def get_user_by_username(db: Session, username: str):
 def get_users(db: Session, skip: int = 0, limit: int = 100):
     return curd.user.get_multi(db, skip, limit)
 
+def page(db: Session, page: int = 1, limit: int = 100):
+    return curd.user.page(db, page, limit)
+
 def create_user(db: Session, user: schemas.UserCreate):
     db_user = get_user_by_username(db, username=user.username)
     if db_user:

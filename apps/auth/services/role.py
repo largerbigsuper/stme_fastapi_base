@@ -21,3 +21,5 @@ def update_role(db: Session, db_obj: models.Role, updates: schemas.RoleUpdate):
 def delete_role_by_id(db: Session, role_id: int):
     return curd.role.remove(db, role_id)
 
+def page(db: Session, page: int = 1, limit: int = 100):
+    return curd.role.page(db, page, limit)

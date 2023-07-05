@@ -6,6 +6,7 @@ from sqlalchemy.orm.session import Session
 from apps.auth import schemas, services, models
 from apps.auth.api.deps import get_current_active_superuser, get_current_active_user, valid_role_id
 from core.db.session import get_db
+from utils.paginations import PageResponse
 
 router = APIRouter()
 
@@ -16,14 +17,14 @@ def create_role(
     current_user: models.User = Depends(get_current_active_superuser)):
     return services.role.create_role(db=db, role=role)
 
-@router.get("/", response_model=list[schemas.Role])
+@router.get("/", response_model=PageResponse[schemas.Role])
 def get_roles(
-    skip: int = 0, 
+    page: int = 1, 
     limit: int = 100, 
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_active_superuser)
     ):
-    return services.role.get_roles(db, skip=skip, limit=limit)
+    return services.role.page(db, page=page, limit=limit)
 
 @router.get("/{role_id}", response_model=schemas.Role)
 def get_role(

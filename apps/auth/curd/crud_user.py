@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, Union
+from typing import Optional
 from pydantic import BaseModel
 
 from sqlalchemy.orm import Session
@@ -52,6 +52,5 @@ class CRUDUser(CRUDBase[User]):
 
     def is_superuser(self, user: User) -> bool:
         return user.is_superuser
-
 
 user = CRUDUser(User)

@@ -2,9 +2,11 @@ from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from core.db.session import Base
+from utils.paginations import paginate
 
 
 ModelType = TypeVar("ModelType", bound=Base)
@@ -65,3 +67,9 @@ class CRUDBase(Generic[ModelType]):
 
     def get_by_ids(self, db: Session, ids: List[int]):
         return db.query(self.model).where(self.model.id.in_(ids)).all()
+
+    def page(self, db: Session, page: int = 1, limit: int = 20):
+        query = select(self.model).where()
+        page = paginate(db, query, self.model, page, limit)
+        return page
+        

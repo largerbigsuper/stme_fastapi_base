@@ -6,6 +6,7 @@ from sqlalchemy.orm.session import Session
 from apps.auth import schemas, services, models
 from apps.auth.api.deps import get_current_active_superuser, get_current_active_user, valid_user_id
 from core.db.session import get_db
+from utils.paginations import PageResponse
 
 router = APIRouter()
 
@@ -16,14 +17,15 @@ def create_user(
     current_user: models.User = Depends(get_current_active_superuser)):
     return services.user.create_user(db=db, user=user)
 
-@router.get("/", response_model=list[schemas.User])
+@router.get("/", response_model=PageResponse[schemas.User])
 def get_users(
-    skip: int = 0, 
-    limit: int = 100, 
+    page: int = 1, 
+    limit: int = 20, 
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_active_superuser)
     ):
-    return services.user.get_users(db, skip=skip, limit=limit)
+    return services.user.page(db, page=page, limit=limit)
+
 
 @router.get("/{user_id}", response_model=schemas.User)
 def get_user(
