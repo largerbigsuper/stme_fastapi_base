@@ -63,3 +63,5 @@ class CRUDBase(Generic[ModelType]):
         db.delete(obj)
         db.commit()
 
+    def get_by_ids(self, db: Session, ids: List[int]):
+        return db.query(self.model).where(self.model.id.in_(ids)).all()

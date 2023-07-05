@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from core.config import settings
 
 # 同步版本的数据库会话
-engine = create_engine(settings.SQLALCHEMY_DATABASE_URL, echo=False)
+engine = create_engine(settings.SQLALCHEMY_DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

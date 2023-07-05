@@ -18,8 +18,14 @@ class RoleUpdate(BaseModel):
     is_active: Optional[bool] = True
 
 
+class RoleBase(BaseModel):
+    id: int
+    name: str
 
-class Role(BaseModel):
+class RoleInfo(RoleBase):
+    pass
+
+class Role(RoleBase):
     id: int
     name: str
     sort: int
@@ -27,7 +33,6 @@ class Role(BaseModel):
     is_active: bool
     created_time: datetime
     updated_time =datetime
-    last_login = datetime
 
     class Config:
         orm_mode = True

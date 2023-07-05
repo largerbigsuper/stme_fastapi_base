@@ -2,6 +2,7 @@ from typing import Any, Dict, Optional, Union
 from pydantic import BaseModel
 
 from sqlalchemy.orm import Session
+from apps.auth import curd
 from apps.auth.models.user import User
 from apps.auth.schemas.user import UserCreate
 from core.security import get_password_hash, verify_password
@@ -16,15 +17,25 @@ class CRUDUser(CRUDBase[User]):
     
     def create(self, db: Session, obj_in: UserCreate) -> User:
         obj_in.password = get_password_hash(obj_in.password)
-        return super().create(db, obj_in)
+        db_obj = self.model(**obj_in.dict(exclude={"roles"}))  # type: ignore
+        if obj_in.roles:
+            role_ids = [x.id for x in obj_in.roles]
+            roles = curd.role.get_by_ids(db, role_ids)
+            db_obj.roles = roles
+        db.add(db_obj)
+        db.commit()
+        db.refresh(db_obj)
+        return db_obj
 
     def update(self, db: Session, db_obj: User, obj_in: BaseModel) -> User:
         if isinstance(obj_in, dict):
             update_data = obj_in
         else:
             update_data = obj_in.dict(exclude_unset=True)
-        if update_data["password"]:
-            hashed_password = get_password_hash(update_data["password"])
+        
+        if "new_password" in update_data:
+            hashed_password = get_password_hash(update_data["new_password"])
+            del update_data["new_password"]
             update_data["password"] = hashed_password
         return super().update(db, db_obj=db_obj, obj_in=update_data)
     

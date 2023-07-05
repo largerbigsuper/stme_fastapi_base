@@ -18,13 +18,17 @@ def init_db(db: Session) -> None:
     # Base.metadata.create_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     
-    # init group
-    roles = []
-    roles.append(schemas.RoleCreate(name="admin", avatar="https://pic50.photophoto.cn/20190115/0017029538033826_b.jpg"))
-    roles.append(schemas.RoleCreate(name="staff", avatar="https://pic50.photophoto.cn/20190115/0017029538033826_b.jpg"))
-    roles.append(schemas.RoleCreate(name="worker", avatar="https://pic50.photophoto.cn/20190115/0017029538033826_b.jpg"))
-    for role in roles:
-        curd.role.create(db, role)
+    # init roles
+    role_list = []
+    role_names = ["admin", "staff", "worker"]
+    for name in role_names:
+        role = curd.role.get_by_name(db, name)
+        if role:
+            role_list.append(role)
+            continue
+        role_create = schemas.RoleCreate(name=name, avatar="https://pic50.photophoto.cn/20190115/0017029538033826_b.jpg")
+        role = curd.role.create(db, role_create)
+        role_list.append(role)
 
     # init user
     user = curd.user.get_by_username(db, username=settings.FIRST_SUPERUSER)
@@ -36,3 +40,6 @@ def init_db(db: Session) -> None:
             is_active=True,
         )
         user = curd.user.create(db, obj_in=user_in)  # noqa: F841
+        user.roles = [role_list[0]]
+        db.add(user)
+        db.commit()
