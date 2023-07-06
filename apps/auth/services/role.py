@@ -1,25 +1,27 @@
 from fastapi import HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Session
-from apps.auth import curd, schemas, models
+
+from apps.auth import curd, models, schemas
 
 
-def get_role_by_id(db: Session, role_id: int):
-    return curd.role.get(db, role_id)
+async def get_role_by_id(db: AsyncSession, role_id: int):
+    return await curd.role.get(db, role_id)
 
-def get_roles(db: Session, skip: int = 0, limit: int = 100):
-    return curd.role.get_multi(db, skip, limit)
+async def get_roles(db: Session, skip: int = 0, limit: int = 100):
+    return await curd.role.get_multi(db, skip, limit)
 
-def create_role(db: Session, role: schemas.RoleCreate):
-    db_obj = curd.role.get_by_name(db, role.name)
+async def create_role(db: Session, role: schemas.RoleCreate):
+    db_obj = await curd.role.get_by_name(db, role.name)
     if db_obj:
         raise HTTPException(status_code=400, detail="{name} already registered".format(name=role.name))
-    return curd.role.create(db, role)
+    return await curd.role.create(db, role)
 
-def update_role(db: Session, db_obj: models.Role, updates: schemas.RoleUpdate):
-    return curd.role.update(db, db_obj, updates)
+async def update_role(db: Session, db_obj: models.Role, updates: schemas.RoleUpdate):
+    return await curd.role.update(db, db_obj, updates)
 
-def delete_role_by_id(db: Session, role_id: int):
-    return curd.role.remove(db, role_id)
+async def delete_role_by_id(db: Session, role_id: int):
+    return await curd.role.remove(db, role_id)
 
-def page(db: Session, page: int = 1, limit: int = 100):
-    return curd.role.page(db, page, limit)
+async def page(db: Session, page: int = 1, limit: int = 100):
+    return await curd.role.page(db, page, limit)

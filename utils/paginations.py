@@ -1,13 +1,13 @@
 import math
 from typing import Generic, List, TypeVar
+
 from pydantic import Field
-
-from sqlalchemy import select, func
-from sqlalchemy.orm import Session
-from sqlalchemy.sql.selectable import Select
-from core.db.session import Base
 from pydantic.generics import GenericModel
+from sqlalchemy import func, select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql.selectable import Select
 
+from core.db.session import Base
 
 M = TypeVar('M')
 
@@ -28,13 +28,16 @@ class Page:
         self.pages = int(math.ceil(total / float(limit)))
 
 
-def paginate(db: Session, query: Select, table: Base, page=1, limit=20):
+async def paginate(db: AsyncSession, query: Select, table: Base, page=1, limit=20):
     if page <= 0:
         raise AttributeError('page needs to be >= 1')
     if limit <= 0:
         raise AttributeError('page_size needs to be >= 1')
-    items = db.execute(query.limit(limit).offset((page - 1) * limit)).scalars().all()
+    
+    result_items = await db.execute(query.limit(limit).offset((page - 1) * limit))
+    items = result_items.scalars().all()
     # count
     count_query = query.with_only_columns(func.count(table.id))
-    total = db.execute(count_query).scalar_one()
+    result_total = await db.execute(count_query)
+    total = result_total.scalar_one()
     return Page(items, page, limit, total).__dict__

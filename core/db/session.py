@@ -5,39 +5,31 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 from core.config import settings
 
-# 同步版本的数据库会话
-engine = create_engine(settings.SQLALCHEMY_DATABASE_URL, echo=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 Base = declarative_base()
 
-def get_db():
-    db = SessionLocal()
-    print("db created", id(db))
-    try:
-        yield db
-    finally:
-        db.close()
-        print("db closed: ", id(db))
+# # 同步版本的数据库会话
+# engine = create_engine(settings.SQLALCHEMY_DATABASE_URL, echo=True)
+# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-
-
-# # 异步版本的数据库会话
-# async_engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URL, echo=True, future=True)
-# AsyncSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=async_engine, class_=AsyncSession)
-
-# Base = declarative_base()
-
-# def get_sync_db():
+# def get_db():
 #     db = SessionLocal()
+#     print("db created", id(db))
 #     try:
 #         yield db
 #     finally:
 #         db.close()
+#         print("db closed: ", id(db))
 
-# def get_async_db():
-#     db = AsyncSessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         await db.close()
+
+
+# # 异步版本的数据库会话
+engine = create_async_engine(settings.SQLALCHEMY_DATABASE_URL, future=True, echo=True)
+
+# 创建异步 SQLAlchemy 会话类
+async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+
+# 异步 SQLAlchemy 会话依赖项
+async def get_db():
+    async with async_session() as session:
+        yield session
+

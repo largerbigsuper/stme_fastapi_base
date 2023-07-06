@@ -3,7 +3,8 @@ from typing import List
 from pydantic import BaseSettings
 
 class STMESettings(BaseSettings):
-    SQLALCHEMY_DATABASE_URL: str = "sqlite:///./stme_base.db"
+    # SQLALCHEMY_DATABASE_URL: str = "sqlite:///./stme_base.db"
+    SQLALCHEMY_DATABASE_URL: str = "sqlite+aiosqlite:///./stme_base.db"
     APP_OPENAPI_URL: str = "/docs"
     APP_ALLOW_ORIGINS: List[str] = ["http://localhost", "http://localhost:8000"]
     APP_ALLOW_METHODS: List[str] = ["get", "post", "update", "delete"]

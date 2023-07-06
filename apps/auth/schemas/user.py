@@ -24,7 +24,7 @@ class UserUpdate(BaseModel):
     roles: Optional[List[role.RoleInfo]]
 
 class UserPassword(BaseModel):
-    password: str
+    new_password: str
 
 
 class UserPasswordChange(BaseModel):
