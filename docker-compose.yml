@@ -1,0 +1,18 @@
+version: "3"
+services:
+  backend:
+    container_name: backend
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    working_dir: /backend
+    environment:
+      PYTHONUNBUFFERED: 1
+      TZ: Asia/Shanghai
+      APP_ENV: dev
+    # volumes:
+    #   - .:/backend
+    #   - ./logs/log:/var/log
+    ports:
+      - "8000:8000"
+    restart: always
