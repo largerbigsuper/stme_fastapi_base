@@ -18,8 +18,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 async def init() -> None:
-    db = async_session()
-    await init_db(db)
+    # db = async_session()
+    async with async_session() as db:
+        await init_db(db)
 
 
 if __name__ == "__main__":
