@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from apps.auth.api.v1.api import router
+from apps.wes.api.v1.api import router as wes_router
 from core.config import settings
 
 
@@ -18,6 +19,7 @@ app.add_middleware(
 )
 
 app.include_router(router, prefix="/" + settings.API_V1_STR)
+app.include_router(wes_router, prefix="/" + settings.API_V1_STR)
 
 
 

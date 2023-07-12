@@ -4,6 +4,7 @@ from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel
 from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from apps.wes import params
 
 from core.db.session import Base
 from utils.paginations import paginate

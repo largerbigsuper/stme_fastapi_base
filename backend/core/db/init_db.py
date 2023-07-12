@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.auth import curd, schemas
+from apps.wes import models
 from core.config import settings
 from core.db.session import Base, engine
 
