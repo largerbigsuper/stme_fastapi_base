@@ -8,7 +8,14 @@ from core.db.session import get_db
 
 
 async def valid_batch_id(batch_id: int, db: AsyncSession = Depends(get_db)) -> Mapping:
-    batch =  await services.batch.get_by_id(db, batch_id)
-    if not batch:
+    obj =  await services.batch.get_by_id(db, batch_id)
+    if not obj:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
-    return batch
+    return obj
+
+
+async def valid_sample_id(sample_id: int, db: AsyncSession = Depends(get_db)) -> Mapping:
+    obj =  await services.sample.get_by_id(db, sample_id)
+    if not obj:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
+    return obj
