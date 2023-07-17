@@ -1,0 +1,139 @@
+from pydantic import BaseModel
+from typing import List, Optional
+from datetime import datetime, timezone
+from decimal import Decimal
+
+class Mutation(BaseModel):
+    id: int
+    batch_id: str
+    sample_id: str
+    gene_name: str
+    transcript: str
+    chromosomal_location: str
+    ref: str
+    alt: str
+    snv_or_cnv: str
+    hgvs_gene: str
+    hgvs_protein: str
+    mutation_frequency: Decimal
+    ad_or_dp: str
+    qual: int
+    mutation_structural_types: str
+    mutation_functional_types: str
+    exon_or_intron: str
+    dbsnp_id: str
+    population_frequency_gnomad: str
+    functional_prediction: str
+    genetic_pattern: str
+    mutation_origin: str
+    phenotype_chpo: str
+    phenotype_score: Decimal
+    db_omim: str
+    db_disease: str
+    db_ophanet: str
+    clinvar: str
+    pathogenicity_evidence_level: str
+    final_related_disease: str
+    clinical_interpretation_info: str
+    final_pathogenicity_determination: str
+    result_classfiy: str
+    is_report: str
+    reviewer_id: int
+    reviewer_time: datetime
+    review_status: str
+    review_result: str
+    created_by: str
+    created_time: datetime
+    updated_by: str
+    updated_time: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class MutationCreate(BaseModel):
+    batch_id: str
+    sample_id: str
+    gene_name: str
+    transcript: str
+    chromosomal_location: str
+    ref: str
+    alt: str
+    snv_or_cnv: str
+    hgvs_gene: str
+    hgvs_protein: str
+    mutation_frequency: Decimal
+    ad_or_dp: str
+    qual: int
+    mutation_structural_types: str
+    mutation_functional_types: str
+    exon_or_intron: str
+    dbsnp_id: str
+    population_frequency_gnomad: str
+    functional_prediction: str
+    genetic_pattern: str
+    mutation_origin: str
+    phenotype_chpo: str
+    phenotype_score: Decimal
+    db_omim: str
+    db_disease: str
+    db_ophanet: str
+    clinvar: str
+    pathogenicity_evidence_level: str
+    final_related_disease: str
+    clinical_interpretation_info: str
+    final_pathogenicity_determination: str
+    result_classfiy: str
+    is_report: str
+    reviewer_id: int
+    reviewer_time: Optional[datetime]
+    review_status: str
+    review_result: str
+    created_by: str
+    created_time: Optional[datetime]
+    updated_by: str
+    updated_time: Optional[datetime]
+
+
+class MutationUpdate(BaseModel):
+    batch_id: str
+    sample_id: str
+    gene_name: str
+    transcript: str
+    chromosomal_location: str
+    ref: str
+    alt: str
+    snv_or_cnv: str
+    hgvs_gene: str
+    hgvs_protein: str
+    mutation_frequency: Decimal
+    ad_or_dp: str
+    qual: int
+    mutation_structural_types: str
+    mutation_functional_types: str
+    exon_or_intron: str
+    dbsnp_id: str
+    population_frequency_gnomad: str
+    functional_prediction: str
+    genetic_pattern: str
+    mutation_origin: str
+    phenotype_chpo: str
+    phenotype_score: Decimal
+    db_omim: str
+    db_disease: str
+    db_ophanet: str
+    clinvar: str
+    pathogenicity_evidence_level: str
+    final_related_disease: str
+    clinical_interpretation_info: str
+    final_pathogenicity_determination: str
+    result_classfiy: str
+    is_report: str
+    reviewer_id: int
+    reviewer_time: Optional[datetime]
+    review_status: str
+    review_result: str
+    created_by: str
+    created_time: Optional[datetime]
+    updated_by: str
+    updated_time: Optional[datetime]

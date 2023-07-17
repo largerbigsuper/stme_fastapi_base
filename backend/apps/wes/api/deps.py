@@ -19,3 +19,10 @@ async def valid_sample_id(sample_id: int, db: AsyncSession = Depends(get_db)) ->
     if not obj:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
     return obj
+
+
+async def valid_mutation_id(mutation_id: int, db: AsyncSession = Depends(get_db)) -> Mapping:
+    obj =  await services.mutation.get_by_id(db, mutation_id)
+    if not obj:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
+    return obj
