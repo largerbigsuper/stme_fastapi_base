@@ -26,3 +26,10 @@ async def valid_mutation_id(mutation_id: int, db: AsyncSession = Depends(get_db)
     if not obj:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
     return obj
+
+
+async def valid_report_id(report_id: int, db: AsyncSession = Depends(get_db)):
+    obj =  await services.report.get_by_id(db, report_id)
+    if not obj:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NOT FOUND")
+    return obj

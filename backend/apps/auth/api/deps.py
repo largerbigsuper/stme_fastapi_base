@@ -28,26 +28,35 @@ async def valid_user_id(user_id: int, db: Session = Depends(get_db)) -> Mapping:
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/security/token")
 
 async def get_current_user(
-        token: Annotated[str, Depends(oauth2_scheme)],
+        # token: Annotated[str, Depends(oauth2_scheme)],
         db: Session = Depends(get_db), 
         ) -> models.User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-        user_id: str = payload.get("sub")
-        if user_id is None:
-            raise credentials_exception
-        token_data = schemas.TokenData(user_id=user_id)
-    except JWTError:
-        raise JWTError.with_traceback
-    user = await services.user.get_user_by_id(db, token_data.user_id)
-    if user is None:
-        raise credentials_exception
+
+    user = await services.user.get_user_by_id(db, 1)
+
     return user
+
+# async def get_current_user(
+#         token: Annotated[str, Depends(oauth2_scheme)],
+#         db: Session = Depends(get_db), 
+#         ) -> models.User:
+#     credentials_exception = HTTPException(
+#         status_code=status.HTTP_401_UNAUTHORIZED,
+#         detail="Could not validate credentials",
+#         headers={"WWW-Authenticate": "Bearer"},
+#     )
+#     try:
+#         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+#         user_id: str = payload.get("sub")
+#         if user_id is None:
+#             raise credentials_exception
+#         token_data = schemas.TokenData(user_id=user_id)
+#     except JWTError:
+#         raise JWTError.with_traceback
+#     user = await services.user.get_user_by_id(db, token_data.user_id)
+#     if user is None:
+#         raise credentials_exception
+#     return user
 
 async def get_current_active_user(
     current_user: models.User = Depends(get_current_user),

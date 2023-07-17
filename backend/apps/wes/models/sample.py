@@ -5,9 +5,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from core.db.session import Base
 
 
-# 定义模型类
 class Sample(Base):
     __tablename__ = 'wes_sequencing_sample'
+    __table_args__ = {'comment': '样本'}
     # __table_args__ = {'schema': 'public'}
 
     id = Column(Integer, primary_key=True, comment='id')

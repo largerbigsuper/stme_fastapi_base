@@ -1,1 +1,1 @@
-from . import batch, sample, mutation
+from . import batch, sample, mutation, report

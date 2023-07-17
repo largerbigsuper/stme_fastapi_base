@@ -230,7 +230,7 @@ COMMENT ON COLUMN wes_sequencing_report.reviewer_time IS '审阅时间';
 COMMENT ON COLUMN wes_sequencing_report.review_status IS '审阅状态';
 COMMENT ON COLUMN wes_sequencing_report.review_result IS '审阅结果';
 COMMENT ON COLUMN wes_sequencing_report.conclusion IS '报告结论';
-COMMENT ON COLUMN wes_sequencing_report.is_issued IS '报告签发';
+COMMENT ON COLUMN wes_sequencing_report.is_issued IS '签发状态';
 COMMENT ON COLUMN wes_sequencing_report.created_by IS '创建人';
 COMMENT ON COLUMN wes_sequencing_report.created_time IS '创建时间';
 COMMENT ON COLUMN wes_sequencing_report.updated_by IS '更新人';

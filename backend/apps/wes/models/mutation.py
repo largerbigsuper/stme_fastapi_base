@@ -5,7 +5,7 @@ from core.db.session import Base
 
 class Mutation(Base):
     __tablename__ = 'wes_sequencing_mutation'
-    # __table_args__ = {'schema': 'public'}
+    __table_args__ = {'comment': '突变'}
 
     id = Column(Integer, primary_key=True, comment='id')
     batch_id = Column(String(32), comment='批次编号')
