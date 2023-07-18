@@ -16,10 +16,8 @@ class CRUDReport(CRUDBase[Report]):
         return result.scalars().one_or_none()
     
     async def page(self, db: AsyncSession, params: params.ReportQueryParams, page: int = 1, limit: int = 20):
-        query = select(self.model).where()
+        query = select(self.model).where(params._get_and_filters(self.model))
         page = await paginate(db, query, self.model, page, limit)
         return page
-        
-    
 
 report = CRUDReport(Report)

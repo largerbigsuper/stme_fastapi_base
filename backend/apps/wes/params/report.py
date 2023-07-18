@@ -1,7 +1,9 @@
 from typing import Optional
 from fastapi import Query
 
-class ReportQueryParams:
+from base.params_base import QueryParamsBase
+
+class ReportQueryParams(QueryParamsBase):
     def __init__(self, 
                  sample_id: Optional[Optional[str]] = Query(default=None, description='样本编号'),
                  lab_code: Optional[str] = Query(default=None, description='实验室代码'),
