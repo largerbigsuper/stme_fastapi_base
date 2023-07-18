@@ -1,1 +1,1 @@
-from . import user, security, role
+from . import user, security, role, captcha
