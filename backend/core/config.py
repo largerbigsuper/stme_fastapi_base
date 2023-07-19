@@ -14,6 +14,9 @@ class STMESettings(BaseSettings):
     API_V1_STR: str = "v1"
     FIRST_SUPERUSER: str = "admin"
     FIRST_SUPERUSER_PASSWORD: str = "admin"
+    REDIS_URL: str = "redis://127.0.0.1:6379" 
+    CACHE_CAPTCHA_EXPIRE_SECONDS: int = 60 * 5 
+    CACHE_CAPTCHA_PREFIX: str = "CAPTCHA_CODE_" 
         
 
 class ProdSettings(STMESettings):

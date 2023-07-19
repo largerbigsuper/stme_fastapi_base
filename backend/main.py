@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from apps.auth.api.v1.api import router
 from apps.wes.api.v1.api import router as wes_router
+from core.event.redis import register_redis
 from core.config import settings
 
 
@@ -18,6 +19,8 @@ app.add_middleware(
     allow_headers=["*"],
 
 )
+
+register_redis(app)
 
 app.include_router(router, prefix="/" + settings.API_V1_STR)
 app.include_router(wes_router, prefix="/" + settings.API_V1_STR)

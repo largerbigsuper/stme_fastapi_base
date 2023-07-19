@@ -7,10 +7,14 @@ from random import randint
 
 from PIL import Image, ImageDraw, ImageFont
 
+from core.config import settings
+from utils.redis_utils import redis_utils
+
 
 async def get_captcha():
     # 生成随机验证码字符串
     captcha_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    await redis_utils.set_captcha_code(captcha_string, captcha_string)
     # 创建新图像
     image = Image.new("RGB", (100, 50), (124, 231, 122))
     # 创建画布
