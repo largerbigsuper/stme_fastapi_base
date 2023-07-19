@@ -23,7 +23,7 @@ class ProdSettings(STMESettings):
 
     class Config:
         case_sensitive = True
-        env_file = "settings/prod.env"
+        env_file = "core/settings/prod.env"
         env_file_encoding = 'utf-8'
 
 
@@ -32,7 +32,7 @@ class TestSettings(STMESettings):
 
     class Config:
         case_sensitive = True
-        env_file = "settings/test.env"
+        env_file = "core/settings/test.env"
         env_file_encoding = 'utf-8'
 
 
@@ -40,7 +40,7 @@ class DevSettings(STMESettings):
 
     class Config:
         case_sensitive = True
-        env_file = "settings/dev.env"
+        env_file = "core/settings/dev.env"
         env_file_encoding = 'utf-8'
 
 

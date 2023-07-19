@@ -2,18 +2,64 @@ version: '3.1'
 
 services:
 
-  db:
+  pgsql:
+    container_name: wes-db-pg
     image: postgres:14.8
-    restart: always
+    restart: unless-stopped
+    stop_grace_period: 1m
     environment:
-      POSTGRES_PASSWORD: root
+      POSTGRES_PASSWORD: wes
+      POSTGRES_USER: wes
+      POSTGRES_DB: wes_db
     ports:
       - 5432:5432
-
+    # volumes:
+    #   - ${PWD}/data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -d wes_db -U wes']
+      interval: 5s
+      timeout: 10s
+      retries: 120
+    networks:
+      - wes_network
 
   adminer:
-    image: adminer
-    restart: always
-
+    image: adminer:4.8.1
+    container_name: wes-db-adminer
+    restart: unless-stopped
     ports:
       - 8080:8080
+    networks:
+      - wes_network
+
+  redis:
+    container_name: wes-db-redis
+    image: redis:7.0.12
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data
+    restart: unless-stopped
+    networks:
+      - wes_network
+
+  phpRedisAdmin:
+    container_name: wes-db-phpRedisAdmin
+    image: erikdubbelboer/phpredisadmin:1
+    ports:
+      - "16379:80"
+    environment:
+      REDIS_1_HOST: redis
+      REDIS_1_NAME: wes
+      REDIS_1_PORT: 6379
+      REDIS_1_AUTH: 
+      ADMIN_USER: 
+      ADMIN_PASS: 
+    restart: unless-stopped
+    networks:
+      - wes_network
+
+
+networks:
+  wes_network:
+    name: wes_network

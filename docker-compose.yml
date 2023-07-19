@@ -1,7 +1,7 @@
 version: "3"
 services:
   backend:
-    container_name: backend
+    container_name: wes-backend
     build:
       context: .
       dockerfile: backend.dockerfile
@@ -9,10 +9,18 @@ services:
     environment:
       PYTHONUNBUFFERED: 1
       TZ: Asia/Shanghai
-      APP_ENV: dev
-    # volumes:
-    #   - .:/backend
-    #   - ./logs/log:/var/log
+      APP_ENV: test
+    volumes:
+      - ./backend:/backend
+      - ./logs/log:/var/log
     ports:
-      - "8000:8000"
+      - "8800:8000"
     restart: always
+    external_links:
+      - wes-db-pg
+      - wes-db-redis
+
+networks:
+  default:
+    external: true
+    name: wes_network
